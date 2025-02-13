@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eya, Will You Be My Valentine?</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background: linear-gradient(135deg, #ff7eb3, #ff758c);
+      font-family: 'Dancing Script', cursive;
+      color: white;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 4rem;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 20px;
+    }
+
+    .balloon {
+      position: absolute;
+      width: 80px;
+      height: 100px;
+      background: #ff6f61;
+      border-radius: 50%;
+      animation: float 6s infinite ease-in-out;
+      z-index: 1;
+    }
+
+    .balloon::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      width: 2px;
+      height: 50px;
+      background: #ff6f61;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-20px) translateX(10px); }
+    }
+
+    .buttons {
+      margin-top: 20px;
+      display: flex;
+      gap: 20px;
+      z-index: 2;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1.5rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    #yesButton {
+      background: #4caf50;
+      color: white;
+    }
+
+    #noButton {
+      background: #f44336;
+      color: white;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 2rem;
+      color: #ff6f61;
+      animation: heartFloat 3s ease-in-out;
+    }
+
+    @keyframes heartFloat {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-100px) scale(0.5); opacity: 0; }
+    }
+
+    .sad-emoji {
+      position: absolute;
+      font-size: 2rem;
+      animation: emojiFade 2s ease-in-out;
+    }
+
+    @keyframes emojiFade {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    .broken-heart {
+      position: absolute;
+      top: 15%;
+      font-size: 5rem;
+      z-index: 2;
+      display: none;
+    }
+
+    .message {
+      position: absolute;
+      top: 25%;
+      font-size: 2rem;
+      font-family: 'Bangers', cursive;
+      text-align: center;
+      z-index: 2;
+      display: none;
+      color: #ff3b3b;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Bangers&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h1>Eya, Will You Be My Valentine?</h1>
+  <div class="buttons">
+    <button id="yesButton">Yes!</button>
+    <button id="noButton">No</button>
+  </div>
+
+  <!-- Balloons -->
+  <div class="balloon" style="top: 10%; left: 20%;"></div>
+  <div class="balloon" style="top: 5%; left: 50%;"></div>
+  <div class="balloon" style="top: 15%; left: 80%;"></div>
+
+  <!-- Broken Heart -->
+  <div class="broken-heart">💔</div>
+  <div class="message">I spent so much time doing this, I will not accept a NO!</div>
+
+  <script>
+    const noButton = document.getElementById('noButton');
+    const yesButton = document.getElementById('yesButton');
+    const brokenHeart = document.querySelector('.broken-heart');
+    const message = document.querySelector('.message');
+    let clickCount = 0;
+    const noButtonTexts = ["Press Yes Please!", "Why Not?", "You’re So Mean!", "Eya, stop it and click Yes!", "Please say Yes!"];
+
+    noButton.addEventListener('click', () => {
+      clickCount++;
+      if (clickCount <= 5) {
+        noButton.textContent = noButtonTexts[clickCount - 1];
+      }
+
+      // Move the "No" button
+      const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+      noButton.style.position = 'absolute';
+      noButton.style.left = `${x}px`;
+      noButton.style.top = `${y}px`;
+
+      // Add heart animations
+      for (let i = 0; i < 5; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '❤️';
+        heart.style.left = `${Math.random() * window.innerWidth}px`;
+        heart.style.top = `${Math.random() * window.innerHeight}px`;
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 3000);
+      }
+
+      // Add sad emoji
+      const sadEmoji = document.createElement('div');
+      sadEmoji.classList.add('sad-emoji');
+      sadEmoji.innerHTML = '😢';
+      sadEmoji.style.left = `${Math.random() * window.innerWidth}px`;
+      sadEmoji.style.top = `${Math.random() * window.innerHeight}px`;
+      document.body.appendChild(sadEmoji);
+      setTimeout(() => sadEmoji.remove(), 2000);
+
+      // Show broken heart and message after 5 clicks
+      if (clickCount === 5) {
+        brokenHeart.style.display = 'block';
+        message.style.display = 'block';
+      }
+    });
+
+    yesButton.addEventListener('click', () => {
+      alert('Yay! You made me the happiest person ever! 💖');
+    });
+  </script>
+</body>
+</html>
